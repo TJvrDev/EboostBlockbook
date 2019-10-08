@@ -21,8 +21,8 @@ var (
 func init() {
 	MainNetParams = chaincfg.MainNetParams
 	MainNetParams.Net = MainnetMagic
-	MainNetParams.PubKeyHashAddrID = []byte{23}
-	MainNetParams.ScriptHashAddrID = []byte{30}
+	MainNetParams.PubKeyHashAddrID = []byte{92}
+	MainNetParams.ScriptHashAddrID = []byte{5}
 	MainNetParams.Bech32HRPSegwit = "ebst"
 
 	TestNetParams = chaincfg.TestNet3Params
