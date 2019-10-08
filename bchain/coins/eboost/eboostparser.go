@@ -1,6 +1,7 @@
 package eboost
 
 import (
+	"blockbook/bchain"
 	"blockbook/bchain/coins/btc"
 
 	"github.com/martinboehm/btcd/wire"
@@ -35,11 +36,15 @@ func init() {
 // EboostParser handle
 type EboostParser struct {
 	*btc.BitcoinParser
+	baseparser *bchain.BaseParser
 }
 
 // NewEboostParser returns new EboostParser instance
 func NewEboostParser(params *chaincfg.Params, c *btc.Configuration) *EboostParser {
-	return &EboostParser{BitcoinParser: btc.NewBitcoinParser(params, c)}
+	return &EboostParser{
+	BitcoinParser: btc.NewBitcoinParser(params, c),
+	baseparser:    &bchain.BaseParser{},
+	}
 }
 
 // GetChainParams contains network parameters for the main Eboost network,
@@ -66,4 +71,14 @@ func GetChainParams(chain string) *chaincfg.Params {
 	default:
 		return &MainNetParams
 	}
+}
+
+// PackTx packs transaction to byte array using protobuf
+func (p *EboostParser) PackTx(tx *bchain.Tx, height uint32, blockTime int64) ([]byte, error) {
+	return p.baseparser.PackTx(tx, height, blockTime)
+}
+
+// UnpackTx unpacks transaction from protobuf byte array
+func (p *EboostParser) UnpackTx(buf []byte) (*bchain.Tx, uint32, error) {
+	return p.baseparser.UnpackTx(buf)
 }
